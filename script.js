@@ -15,7 +15,7 @@ const getHumanChoice = () => {
 
 const playRound = (computerChoice, humanChoice) => {
     if (computerChoice === humanChoice) {
-        console.log(`Tie. ${humanChoice} ties ${computerChoice}`);
+        text.textContent = `Tie. ${humanChoice} ties ${computerChoice}.`;
         return "tie";
     } 
     else if (
@@ -23,30 +23,39 @@ const playRound = (computerChoice, humanChoice) => {
         humanChoice === "paper" && computerChoice === "rock" ||
         humanChoice === "scissors" && computerChoice === "paper"
     ) {
-        console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+        text.textContent = `You win! ${humanChoice} beats ${computerChoice}.`;
         return "human";
     } else {
-        console.log(`You lose. ${computerChoice} beats ${humanChoice}`)
+        text.textContent = `You lose. ${computerChoice} beats ${humanChoice}.`;
         return "computer";
     }
 }
 
-const playGame = () => {
-    let computerScore = 0;
-    let humanScore = 0;
+const playGame = (humanChoice) => {
+    const computerChoice = getComputerChoice();
+    const winner = playRound(computerChoice, humanChoice);
+    if (winner === "computer") {
+        computerScore++
+    } else if (winner === "human") {
+        humanScore++;
+    }
+    text.textContent += (` Computer: ${computerScore} | Human: ${humanScore}.`);
 
-    for (let i = 1; i <= 5; i++) {
-        console.log(`Round ${i}`);
-        const computerChoice = getComputerChoice();
-        const humanChoice = getHumanChoice();
-        const winner = playRound(computerChoice, humanChoice);
-        if (winner === "computer") {
-            computerScore++
-        } else if (winner === "human") {
-            humanScore++;
-        }
-        console.log(`Computer: ${computerScore} | Human: ${humanScore}`);
+    if (computerScore === 5) {
+        text.textContent += " Computer wins game."
+    } else if (humanScore === 5) {
+        text.content += " You win game!"
     }
 }
 
-playGame();
+const rock = document.querySelector("#rock");
+const paper = document.querySelector("#paper");
+const scissors = document.querySelector("#scissors");
+const text = document.querySelector("div");
+
+let computerScore = 0;
+let humanScore = 0;
+
+rock.addEventListener("click", () => playGame("rock"));
+paper.addEventListener("click", () => playGame("paper"));
+scissors.addEventListener("click", () => playGame("scissors"));
